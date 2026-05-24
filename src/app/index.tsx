@@ -15,7 +15,11 @@ export default function HomeScreen() {
     return (
         <View style={styles.container}>
            
-
+        <View style={styles.hero}>
+           
+            <Text style={styles.title}>GAMERLOG</Text>
+            <Text style={styles.sub}>Tu biblioteca de juegos definitiva</Text>
+        </View>
             <View style={styles.buttons}>
                 <AppButton
                     label="Explorar juegos"
