@@ -8,11 +8,11 @@ export default function GamesLayout() {
                 headerStyle: {
                     backgroundColor: theme.colors.background,
                 },
-                headerTintColor: theme.colors.primary,
+                headerTintColor: theme.colors.neon,
                 headerTitleAlign: "center",
                 headerTitleStyle: {
                     fontWeight: "bold",
-                    fontSize: theme.fontSize.lg,
+                    fontSize: theme.font.lg,
                 },
                 contentStyle: {
                     backgroundColor: theme.colors.background,
@@ -24,7 +24,7 @@ export default function GamesLayout() {
                 options={{ title: "EXPLORAR" }}
             />
             <Stack.Screen
-                name="id"
+                name="[id]"
                 options={{ title: "DETALLE" }}
             />
         </Stack>

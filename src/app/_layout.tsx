@@ -15,7 +15,7 @@ export default function RootLayout() {
                     paddingTop: 8,
                 },
                 // Color del ícono y texto activo/inactivo
-                tabBarActiveTintColor: theme.colors.primary,
+                tabBarActiveTintColor: theme.colors.neon,
                 tabBarInactiveTintColor: theme.colors.textMuted,
 
                 // Configuración por defecto de las cabeceras (headers)
@@ -25,11 +25,11 @@ export default function RootLayout() {
                     shadowOpacity: 0, // Remueve la sombra en iOS
                     elevation: 0,     // Remueve la sombra en Android
                 },
-                headerTintColor: theme.colors.primary,
+                headerTintColor: theme.colors.neon,
                 headerTitleAlign: "center",
                 headerTitleStyle: {
                     fontWeight: "bold",
-                    fontSize: theme.fontSize.lg,
+                    fontSize: theme.font.lg,
                 },
                 // SOLUCIÓN: Usamos sceneStyle en lugar de contentStyle para el fondo de los Tabs
                 sceneStyle: {

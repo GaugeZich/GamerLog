@@ -8,11 +8,11 @@ export default function MyListLayout() {
                 headerStyle: {
                     backgroundColor: theme.colors.background,
                 },
-                headerTintColor: theme.colors.primary,
+                headerTintColor: theme.colors.neon,
                 headerTitleAlign: "center",
                 headerTitleStyle: {
                     fontWeight: "bold",
-                    fontSize: theme.fontSize.lg,
+                    fontSize: theme.font.lg,
                 },
                 contentStyle: {
                     backgroundColor: theme.colors.background,
