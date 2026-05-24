@@ -6,7 +6,7 @@ import { theme } from '../../constants/theme';
 // Mock para diseño
 const GAME_MOCK = {
     name: 'Elden Ring',
-    rating: 9.5,
+    rating: 5,
     released: '2022-02-25',
     genres: [{ name: 'RPG' }, { name: 'Acción' }],
     platforms: [{ platform: { name: 'PC' } }, { platform: { name: 'PS5' } }],
