@@ -4,7 +4,7 @@ import { theme } from '../constants/theme';
 // Tipo local solo para diseño — en la rama de programación
 // esto vendrá del archivo src/types/game.ts
 type GamePreview = {
-    id: string;
+    id: number;
     name: string;
     background_image: string | null;
     rating: number;
