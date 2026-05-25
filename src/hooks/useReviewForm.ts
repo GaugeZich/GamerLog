@@ -46,6 +46,10 @@ export function useReviewForm({ gameId, gameName, background_image }: Params) {
       setLoading(false);
     }
   }
+<<<<<<< HEAD
 
   return { score, setScore, status, setStatus, review, setReview, errors, loading, handleSubmit };
+=======
+ return { score, setScore, status, setStatus, review, setReview, errors, loading, handleSubmit };
+>>>>>>> 319c8785d2e084864a7f525e1bd6d79d0ff38d63
 }
