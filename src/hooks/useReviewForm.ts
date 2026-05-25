@@ -18,7 +18,6 @@ export function useReviewForm({ gameId, gameName, background_image }: Params) {
   const [loading, setLoading] = useState(false);
 
   async function handleSubmit() {
-    // Validación
     const e: Record<string, string> = {};
     if (score === 0) e.score = 'Seleccioná un puntaje';
     if (!status) e.status = 'Seleccioná un estado';
@@ -26,7 +25,6 @@ export function useReviewForm({ gameId, gameName, background_image }: Params) {
     setErrors(e);
     if (Object.keys(e).length > 0) return;
 
-    // Guardado
     setLoading(true);
     try {
       const saved: SavedGame = {
@@ -39,17 +37,13 @@ export function useReviewForm({ gameId, gameName, background_image }: Params) {
         background_image,
       };
       await saveGame(saved);
-      router.replace('/mylist'); // vuelve a la lista después de guardar
+      router.replace('/mylist');
     } catch {
       setErrors({ general: 'No se pudo guardar. Intentá de nuevo.' });
     } finally {
       setLoading(false);
     }
   }
-<<<<<<< HEAD
 
   return { score, setScore, status, setStatus, review, setReview, errors, loading, handleSubmit };
-=======
- return { score, setScore, status, setStatus, review, setReview, errors, loading, handleSubmit };
->>>>>>> 319c8785d2e084864a7f525e1bd6d79d0ff38d63
 }
