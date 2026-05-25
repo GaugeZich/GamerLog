@@ -1,30 +1,24 @@
-import { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, ScrollView, StyleSheet, Alert } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, ScrollView, StyleSheet } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
 import { AppButton } from '../../components/AppButton';
+import { useReviewForm } from '../../hooks/useReviewForm';
 import { theme } from '../../constants/theme';
 
 const ESTADOS = ['Jugando', 'Terminado', 'Pendiente', 'Abandonado'];
 
 export default function ReviewScreen() {
-    const { gameName } = useLocalSearchParams<{ gameName: string }>();
+    const { gameName, gameId, background_image } = useLocalSearchParams<{
+        gameName: string;
+        gameId: string;
+        background_image: string;
+    }>();
 
-    // Estado local para diseño — en programación irá al hook useReviewForm
-    const [score, setScore] = useState(0);
-    const [status, setStatus] = useState('');
-    const [review, setReview] = useState('');
-    const [errors, setErrors] = useState<Record<string, string>>({});
-
-    function handleSubmit() {
-        const e: Record<string, string> = {};
-        if (score === 0) e.score = 'Seleccioná un puntaje';
-        if (!status) e.status = 'Seleccioná un estado';
-        if (!review.trim()) e.review = 'Escribí tu reseña';
-        setErrors(e);
-        if (Object.keys(e).length === 0) {
-            Alert.alert('Diseño', 'En programación esto guardará la reseña.');
-        }
-    }
+    const { score, setScore, status, setStatus, review, setReview, errors, handleSubmit } =
+        useReviewForm({
+            gameId: gameId ?? '',
+            gameName: gameName ?? '',
+            background_image: background_image || null,
+        });
 
     return (
         <ScrollView style={styles.container} contentContainerStyle={styles.content}>
