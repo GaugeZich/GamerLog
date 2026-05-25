@@ -1,25 +1,29 @@
-import { View, Text, Image, StyleSheet } from 'react-native';
-import { useRouter } from 'expo-router';
-import { AppButton } from '../components/AppButton';
-import { theme } from '../constants/theme';
-
-const RECENT_MOCK = [
-    { id: '1', name: 'Elden Ring', score: 4.5, addedAgo: 'Agregado hace 2 días' },
-    { id: '2', name: 'Hades II', score: 0, addedAgo: null },
-    { id: '3', name: 'Left 4 Dead 2', score: 0, addedAgo: null },
-];
+import { useRouter, useFocusEffect } from 'expo-router';
+import { useCallback, useState } from 'react';
+import { View, Text, StyleSheet } from 'react-native';
+import { getSavedGames } from '../services/storage.service';
+import { SavedGame } from '../types/game';
+import { AppButton } from '../components/AppButton'; // Asegurate de que la ruta a tus componentes sea correcta
+import { theme } from '../constants/theme'; // Asegurate de que la ruta a tu tema sea correcta
 
 export default function HomeScreen() {
     const router = useRouter();
+    const [recent, setRecent] = useState<SavedGame[]>([]);
+
+    // Se ejecuta cada vez que el usuario vuelve a ver esta pantalla
+    useFocusEffect(
+        useCallback(() => {
+            getSavedGames().then(all => setRecent(all.slice(0, 3))); // Muestra los 3 más recientes
+        }, [])
+    );
 
     return (
         <View style={styles.container}>
-           
-        <View style={styles.hero}>
-           
-            <Text style={styles.title}>GAMERLOG</Text>
-            <Text style={styles.sub}>Tu biblioteca de juegos definitiva</Text>
-        </View>
+            <View style={styles.hero}>
+                <Text style={styles.title}>GameLog</Text>
+                <Text style={styles.sub}>Tu biblioteca de juegos definitiva</Text>
+            </View>
+
             <View style={styles.buttons}>
                 <AppButton
                     label="Explorar juegos"
@@ -34,22 +38,32 @@ export default function HomeScreen() {
 
             <View style={styles.recentBox}>
                 <Text style={styles.recentTitle}>RECIENTE</Text>
-                {RECENT_MOCK.map(item => (
-                    <View key={item.id} style={styles.recentItem}>
-                        <View style={styles.recentIcon}>
-                            {/* podés poner la portada del juego acá con un Image */}
-                        </View>
-                        <View style={styles.recentInfo}>
-                            <Text style={styles.recentName}>{item.name}</Text>
-                            <Text style={styles.recentSub}>
-                                {item.addedAgo ?? 'Sin puntuar'}
+                
+                {recent.length === 0 ? (
+                    <Text style={styles.recentSub}>No hay juegos guardados recientemente.</Text>
+                ) : (
+                    recent.map(item => (
+                        <View key={item.gameId} style={styles.recentItem}>
+                            <View style={styles.recentIcon}>
+                                {/* Podés poner la portada del juego acá con un <Image source={{ uri: item.imageUrl }} /> */}
+                            </View>
+                            
+                            <View style={styles.recentInfo}>
+                                {/* Ajustado a item.gameName según tus indicaciones */}
+                                <Text style={styles.recentName}>{item.gameName}</Text>
+                                <Text style={styles.recentSub}>
+                                    {item.savedAt 
+                                        ? `Guardado: ${new Date(item.savedAt).toLocaleDateString()}` 
+                                        : 'Sin fecha'}
+                                </Text>
+                            </View>
+
+                            <Text style={[styles.recentScore, (!item.score || item.score === 0) && styles.recentScoreMuted]}>
+                                {item.score && item.score > 0 ? `★ ${item.score}` : '—'}
                             </Text>
                         </View>
-                        <Text style={[styles.recentScore, item.score === 0 && styles.recentScoreMuted]}>
-                            {item.score > 0 ? `★ ${item.score}` : '—'}
-                        </Text>
-                    </View>
-                ))}
+                    ))
+                )}
             </View>
         </View>
     );
