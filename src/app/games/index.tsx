@@ -1,43 +1,81 @@
-import { FlatList, StyleSheet } from 'react-native';
+import { useState, useEffect } from 'react';
+import { FlatList, StyleSheet, ActivityIndicator, View, TextInput } from 'react-native';
 import { useRouter } from 'expo-router';
 import { GameCard } from '../../components/GameCard';
+import { getGames } from '../../services/rawn.service';
+import { Game } from '../../types/game';
 import { theme } from '../../constants/theme';
 
-// Datos mock para diseño — en programación vendrán de la API
-const GAMES_MOCK = [
-    { id: '1', name: 'Elden Ring', background_image: null, rating: 5, genres: [{ name: 'RPG' }, { name: 'Acción' }] },
-    { id: '2', name: 'Hades II', background_image: null, rating: 4, genres: [{ name: 'Roguelike' }] },
-    { id: '3', name: 'Starfield', background_image: null, rating: 4, genres: [{ name: 'RPG' }, { name: 'Aventura' }] },
-    { id: '4', name: 'Forza Horizon 5', background_image: null, rating: 4, genres: [{ name: 'Carreras' }] },
-    { id: '5', name: 'Cyberpunk 2077', background_image: null, rating: 4, genres: [{ name: 'RPG' }, { name: 'Acción' }] },
-];
-
 export default function GamesScreen() {
-    const router = useRouter();
+  const router = useRouter();
+  const [games, setGames] = useState<Game[]>([]);
+  const [search, setSearch] = useState('');
+  const [loading, setLoading] = useState(true);
 
-    return (
+  useEffect(() => {
+    loadGames();
+  }, []);
+
+  // Recarga cuando cambia el texto de búsqueda (con debounce simple)
+  useEffect(() => {
+    const timeout = setTimeout(() => loadGames(search), 400);
+    return () => clearTimeout(timeout);
+  }, [search]);
+
+  async function loadGames(query?: string) {
+    setLoading(true);
+    try {
+      const data = await getGames(query);
+      setGames(data);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  return (
+    <>
+      <TextInput
+        style={styles.searchInput}
+        placeholder="Buscar juego..."
+        placeholderTextColor={theme.colors.textMuted}
+        value={search}
+        onChangeText={setSearch}
+      />
+      {loading ? (
+        <View style={styles.center}>
+          <ActivityIndicator color={theme.colors.neon} />
+        </View>
+      ) : (
         <FlatList
-            data={GAMES_MOCK}
-            keyExtractor={(item) => item.id}
-            style={styles.list}
-            contentContainerStyle={styles.content}
-            renderItem={({ item }) => (
-                <GameCard
-                    game={item}
-                    onPress={() => router.push('/games/id')}
-                />
-            )}
+          data={games}
+          keyExtractor={(item) => String(item.id)}
+          style={styles.list}
+          contentContainerStyle={styles.content}
+          renderItem={({ item }) => (
+            <GameCard
+              game={item}
+              onPress={() => router.push(`/games/${item.id}`)}
+            />
+          )}
         />
-    );
+      )}
+    </>
+  );
 }
 
 const styles = StyleSheet.create({
-    list: {
-        flex: 1,
-        backgroundColor: theme.colors.background,
-    },
-    content: {
-        paddingTop: theme.spacing.md,
-        paddingBottom: theme.spacing.xl,
-    },
+  list: { flex: 1, backgroundColor: theme.colors.background },
+  content: { paddingTop: theme.spacing.md, paddingBottom: theme.spacing.xl },
+  searchInput: {
+    backgroundColor: theme.colors.surface,
+    color: theme.colors.text,
+    margin: theme.spacing.md,
+    borderRadius: theme.radius.md,
+    paddingHorizontal: theme.spacing.md,
+    paddingVertical: theme.spacing.sm,
+    borderWidth: 1,
+    borderColor: theme.colors.border,
+    fontSize: theme.font.md,
+  },
+  center: { flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: theme.colors.background },
 });
