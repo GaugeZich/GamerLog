@@ -1,10 +1,10 @@
-import { useEffect, useState } from 'react';
-import { View, Text, ScrollView, StyleSheet, Image, ActivityIndicator } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
+import { useEffect, useState } from 'react';
+import { ActivityIndicator, Image, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { AppButton } from '../../components/AppButton';
-import { getGameById } from '../../services/rawn.service';
-import { Game } from '../../types/game';
 import { theme } from '../../constants/theme';
+import { getGameById } from '../../services/rawg.service';
+import { Game } from '../../types/game';
 
 export default function GameDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();

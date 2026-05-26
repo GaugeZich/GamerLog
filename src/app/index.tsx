@@ -5,6 +5,7 @@ import { getSavedGames } from '../services/storage.service';
 import { SavedGame } from '../types/game';
 import { AppButton } from '../components/AppButton';
 import { theme } from '../constants/theme';
+import Svg, { Path } from "react-native-svg";
 
 export default function HomeScreen() {
     const router = useRouter();
@@ -93,11 +94,6 @@ const styles = StyleSheet.create({
     hero: {
         alignItems: 'center',
         gap: theme.spacing.sm,
-    },
-    logo: {
-        width: 72,
-        height: 72,
-        borderRadius: 16,
     },
     title: {
         color: theme.colors.neon,

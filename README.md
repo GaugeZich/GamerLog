@@ -5,31 +5,29 @@
 - Guillermo Valenzuela
 - Lucas Garcia Carrera
 
+
 ## 📖 Descripción
 
-Una aplicación móvil simple que consume una API de juegos. Dentro de la aplicación podemos ver la lista de juegos, guardarlos y darles una reseña.
+GamerLog es una aplicación móvil simple desarrollada con React Native y Expo que consume una API de juegos y funciona como una cartelera de videojuegos al estilo IMDb.
+Dentro de la aplicación podemos ver una lista de juegos, guardar los títulos en una lista personal y dejar reseñas con puntuaciones propias.
 
-## API Utilizada
+
+## 🌐 API Utilizada
 
 La API que utilizamos para esta aplicación es:
 - https://rawg.io/apidocs
 
 Credits to: © RAWG, Behind The Games
 
-## Estructura Utilizada
 
-- app/ - Pantallas y rutas: Cada archivo es una pantalla
-    - games: Agrupa listado y detalle
-    - mylist: Agrupa la lista y el formulario
-- components/ - Piezas reutilizables. Card para juegos (GameCard), un botón reutilizable (AppButton) y el EmptyState que es una pantalla de sección 
-- constants/ - Solo un archivo theme.ts para colores y estilos base
-- hooks/ - Para manejar el state, la validación y el guardado del formulario
-- services/ - Para manejar la API.
-    - rawg.service.ts: trae los juegos de la API.
-    - storage.service.ts: manejo del storage.
-- types/ - Para definir los tipos
-
-
+## 🚀 Funcionalidades
+✔ Explorar videojuegos desde RAWG  
+✔ Buscar juegos por nombre  
+✔ Ver detalle completo  
+✔ Guardar juegos localmente  
+✔ Crear reseñas y puntuaciones  
+✔ Persistencia local con AsyncStorage  
+✔ Navegación móvil con tabs y stacks
 
 
 ## 📱 Pantallas
@@ -44,35 +42,92 @@ Credits to: © RAWG, Behind The Games
 
 - __Puntuar/Reseña:__ Formulario controlado con estrellas interactivas, estado del juego y campo de reseña, este es el que cumple el requerimiento del formulario del TP.
 
+La aplicación utiliza Expo Router combinando:
+- Tabs para navegación principal
+- Stack para pantallas internas
+
+
+## 🧱 Estructura Utilizada
+
+```txt
+src/
+├── app/              # Pantallas y navegación
+├── components/       # Componentes reutilizables
+├── constants/        # Configuración visual y theme
+├── hooks/            # Hooks personalizados
+├── services/         # API y storage
+├── types/            # Tipos TypeScript
+```
+
+
 ## ⚙️ Instalación y ejecución
 
 ### 1. Clonar el repositorio
-
 `bash`
+```
 git clone https://github.com/GaugeZich/GamerLog.git
+```
+
 
 ### 2. Movernos adentro del directorio
-
 `bash`
+```
 cd gamerlog
+```
+
 
 ### 3. Iniciar el proyecto
-
 `bash`
+```
 npx expo start
+```
 
-### 4. Conexión al proyecto
+
+### 4. Configurar .env
+Crear el archivo .env en la raiz del proyecto y configurar la key
+```
+EXPO_PUBLIC_RAWG_KEY=
+```
+
+### 5. Iniciar el proyecto
+`bash`
+```
+npx expo start
+```
+
+
+### 6. Conexión al proyecto
 
 Dentro de Expo Go (Si no cuenta con la aplicación móvil debe descargarla desde Google Play/App Store) le damos a "Scan QR code" y escaneamos el código QR que se genera al iniciar el proyecto.
-
 
 
 ## 📚 Tecnologías
 
 - React Native
+- Expo
+- TypeScript
+- AsyncStorage
+- RAWG API
+- Expo Vector Icons
 
 
 ## 🖌️ Diseños
 
 Diseños realizados en la aplicación Canva:
 - https://canva.link/fbja2aabqph227j
+
+### Inicio
+![Inicio](./assets/diseños/Inicio.png)
+
+### Explorar
+![Explorar](./assets/diseños/Explorar.png)
+
+### Detalle
+![Detalle](./assets/diseños/Detalle.png)
+
+### Reseña
+![Reseña](./assets/diseños/Reseña.png)
+
+### Mi Lista
+![Mi Lista](./assets/diseños/MiLista.png)
+

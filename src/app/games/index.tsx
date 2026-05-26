@@ -1,10 +1,10 @@
-import { useState, useEffect } from 'react';
-import { FlatList, StyleSheet, ActivityIndicator, View, TextInput } from 'react-native';
 import { useRouter } from 'expo-router';
+import { useEffect, useState } from 'react';
+import { ActivityIndicator, FlatList, StyleSheet, TextInput, View } from 'react-native';
 import { GameCard } from '../../components/GameCard';
-import { getGames } from '../../services/rawn.service';
-import { Game } from '../../types/game';
 import { theme } from '../../constants/theme';
+import { getGames } from '../../services/rawg.service';
+import { Game } from '../../types/game';
 
 export default function GamesScreen() {
   const router = useRouter();
