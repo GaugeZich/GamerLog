@@ -26,13 +26,13 @@ export default function ReviewScreen() {
 
             <Text style={styles.label}>Tu puntaje</Text>
             <View style={styles.starsRow}>
-                {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(n => (
+                {[1, 2, 3, 4, 5].map(n => (
                     <TouchableOpacity key={n} onPress={() => setScore(n)}>
                         <Text style={[styles.star, n <= score && styles.starActive]}>★</Text>
                     </TouchableOpacity>
                 ))}
             </View>
-            {score > 0 && <Text style={styles.scoreLabel}>{score} / 10</Text>}
+            {score > 0 && <Text style={styles.scoreLabel}>{score} / 5</Text>}
             {errors.score && <Text style={styles.error}>{errors.score}</Text>}
 
             <Text style={styles.label}>Estado</Text>

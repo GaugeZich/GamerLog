@@ -1,10 +1,10 @@
 import { useRouter, useFocusEffect } from 'expo-router';
 import { useCallback, useState } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Image } from 'react-native';
 import { getSavedGames } from '../services/storage.service';
 import { SavedGame } from '../types/game';
-import { AppButton } from '../components/AppButton'; // Asegurate de que la ruta a tus componentes sea correcta
-import { theme } from '../constants/theme'; // Asegurate de que la ruta a tu tema sea correcta
+import { AppButton } from '../components/AppButton';
+import { theme } from '../constants/theme';
 
 export default function HomeScreen() {
     const router = useRouter();
@@ -20,7 +20,8 @@ export default function HomeScreen() {
     return (
         <View style={styles.container}>
             <View style={styles.hero}>
-                <Text style={styles.title}>GameLog</Text>
+                <svg xmlns="http://www.w3.org/2000/svg" height="12vh" viewBox="0 -960 960 960" width="12vh" fill="#00ff88"><path d="M182-200q-51 0-79-35.5T82-322l42-300q9-60 53.5-99T282-760h396q60 0 104.5 39t53.5 99l42 300q7 51-21 86.5T778-200q-21 0-39-7.5T706-230l-90-90H344l-90 90q-15 15-33 22.5t-39 7.5Zm16-86 114-114h336l114 114q2 2 16 6 11 0 17.5-6.5T800-304l-44-308q-4-29-26-48.5T678-680H282q-30 0-52 19.5T204-612l-44 308q-2 11 4.5 17.5T182-280q2 0 16-6Zm510.5-165.5Q720-463 720-480t-11.5-28.5Q697-520 680-520t-28.5 11.5Q640-497 640-480t11.5 28.5Q663-440 680-440t28.5-11.5Zm-80-120Q640-583 640-600t-11.5-28.5Q617-640 600-640t-28.5 11.5Q560-617 560-600t11.5 28.5Q583-560 600-560t28.5-11.5ZM310-440h60v-70h70v-60h-70v-70h-60v70h-70v60h70v70Zm170-40Z" /></svg>
+                <Text style={styles.title}>GamerLog</Text>
                 <Text style={styles.sub}>Tu biblioteca de juegos definitiva</Text>
             </View>
 
@@ -38,22 +39,34 @@ export default function HomeScreen() {
 
             <View style={styles.recentBox}>
                 <Text style={styles.recentTitle}>RECIENTE</Text>
-                
+
                 {recent.length === 0 ? (
                     <Text style={styles.recentSub}>No hay juegos guardados recientemente.</Text>
                 ) : (
                     recent.map(item => (
                         <View key={item.gameId} style={styles.recentItem}>
+
                             <View style={styles.recentIcon}>
-                                {/* Podés poner la portada del juego acá con un <Image source={{ uri: item.imageUrl }} /> */}
+                                {item.background_image ? (
+                                    <Image
+                                        source={{ uri: item.background_image }}
+                                        style={styles.imageThumb}
+                                    />
+                                ) : (
+                                    // Placeholder por si algún juego viejo no guardó URL de imagen
+                                    <View style={styles.placeholderThumb}>
+                                        <Text style={styles.placeholderText}>
+                                            <svg xmlns="http://www.w3.org/2000/svg" height="6vh" viewBox="0 -960 960 960" width="6vh" fill="#666666"><path d="M182-200q-51 0-79-35.5T82-322l42-300q9-60 53.5-99T282-760h396q60 0 104.5 39t53.5 99l42 300q7 51-21 86.5T778-200q-21 0-39-7.5T706-230l-90-90H344l-90 90q-15 15-33 22.5t-39 7.5Zm16-86 114-114h336l114 114q2 2 16 6 11 0 17.5-6.5T800-304l-44-308q-4-29-26-48.5T678-680H282q-30 0-52 19.5T204-612l-44 308q-2 11 4.5 17.5T182-280q2 0 16-6Zm510.5-165.5Q720-463 720-480t-11.5-28.5Q697-520 680-520t-28.5 11.5Q640-497 640-480t11.5 28.5Q663-440 680-440t28.5-11.5Zm-80-120Q640-583 640-600t-11.5-28.5Q617-640 600-640t-28.5 11.5Q560-617 560-600t11.5 28.5Q583-560 600-560t28.5-11.5ZM310-440h60v-70h70v-60h-70v-70h-60v70h-70v60h70v70Zm170-40Z" /></svg>
+                                        </Text>
+                                    </View>
+                                )}
                             </View>
-                            
+
                             <View style={styles.recentInfo}>
-                                {/* Ajustado a item.gameName según tus indicaciones */}
                                 <Text style={styles.recentName}>{item.gameName}</Text>
                                 <Text style={styles.recentSub}>
-                                    {item.savedAt 
-                                        ? `Guardado: ${new Date(item.savedAt).toLocaleDateString()}` 
+                                    {item.savedAt
+                                        ? `Guardado: ${new Date(item.savedAt).toLocaleDateString()}`
                                         : 'Sin fecha'}
                                 </Text>
                             </View>
@@ -124,10 +137,26 @@ const styles = StyleSheet.create({
         borderTopColor: theme.colors.border,
     },
     recentIcon: {
-        width: 36,
-        height: 36,
+        width: 40,
+        height: 40,
         backgroundColor: theme.colors.border,
         borderRadius: 8,
+        overflow: 'hidden',
+    },
+    imageThumb: {
+        width: '100%',
+        height: '100%',
+        resizeMode: 'cover',
+    },
+    placeholderThumb: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: theme.colors.surfaceAlt,
+    },
+    placeholderText: {
+        color: theme.colors.textMuted,
+        fontSize: 14,
     },
     recentInfo: {
         flex: 1,
