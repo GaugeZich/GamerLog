@@ -76,10 +76,10 @@ cd gamerlog
 ```
 
 
-### 3. Iniciar el proyecto
+### 3. Instalar dependencias
 `bash`
 ```
-npx expo start
+npm i
 ```
 
 
