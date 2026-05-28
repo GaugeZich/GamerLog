@@ -12,7 +12,7 @@ import { useRouter, useFocusEffect } from 'expo-router';
 import { MaterialIcons } from '@expo/vector-icons';
 
 import { EmptyState } from '../../components/EmptyState';
-import { getSavedGames } from '../../services/storage.service';
+import { getSavedGames, removeGame } from '../../services/storage.service';
 import { SavedGame } from '../../types/game';
 import { theme } from '../../constants/theme';
 
@@ -20,11 +20,8 @@ export default function MyListScreen() {
   const router = useRouter();
 
   const [list, setList] = useState<SavedGame[]>([]);
+  const [selectedGameId, setSelectedGameId] = useState<string | null>(null);
 
-  // Modal visual
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
-
-  // useFocusEffect recarga la lista cada vez que el usuario vuelve a esta pantalla
   useFocusEffect(
     useCallback(() => {
       getSavedGames().then(setList);
@@ -50,68 +47,53 @@ export default function MyListScreen() {
         renderItem={({ item }) => (
           <View style={styles.card}>
             <View style={styles.cardHeader}>
-              <Text style={styles.cardName}>
-                {item.gameName}
-              </Text>
+              <Text style={styles.cardName}>{item.gameName}</Text>
 
               {item.score > 0 ? (
                 <View style={styles.scoreBadge}>
-                  <Text style={styles.scoreText}>
-                    ★ {item.score}/5
-                  </Text>
+                  <Text style={styles.scoreText}>★ {item.score}/5</Text>
                 </View>
               ) : (
                 <View style={[styles.scoreBadge, styles.scoreBadgeMuted]}>
-                  <Text style={styles.scoreTextMuted}>
-                    Sin puntuar
-                  </Text>
+                  <Text style={styles.scoreTextMuted}>Sin puntuar</Text>
                 </View>
               )}
             </View>
 
-            <Text style={styles.status}>
-              {item.status}
-            </Text>
+            <Text style={styles.status}>{item.status}</Text>
 
             {item.review ? (
               <Text style={styles.review} numberOfLines={2}>
                 "{item.review}"
               </Text>
             ) : (
-              <Text style={styles.reviewEmpty}>
-                Sin reseña aún
-              </Text>
+              <Text style={styles.reviewEmpty}>Sin reseña aún</Text>
             )}
 
             <TouchableOpacity
               style={styles.deleteButton}
               activeOpacity={0.8}
-              onPress={() => setShowDeleteModal(true)}
+              onPress={() => setSelectedGameId(item.gameId)}
             >
               <MaterialIcons
                 name="delete-outline"
                 size={18}
                 color={theme.colors.delete}
               />
-
-              <Text style={styles.deleteText}>
-                Eliminar reseña
-              </Text>
+              <Text style={styles.deleteText}>Eliminar reseña</Text>
             </TouchableOpacity>
           </View>
         )}
       />
 
       <Modal
-        visible={showDeleteModal}
+        visible={!!selectedGameId}
         transparent
         animationType="fade"
       >
         <View style={styles.modalOverlay}>
           <View style={styles.modalCard}>
-            <Text style={styles.modalTitle}>
-              ¿Estás seguro?
-            </Text>
+            <Text style={styles.modalTitle}>¿Estás seguro?</Text>
 
             <Text style={styles.modalText}>
               Esta acción no se puede deshacer.
@@ -120,19 +102,24 @@ export default function MyListScreen() {
             <View style={styles.modalButtons}>
               <TouchableOpacity
                 style={styles.cancelButton}
-                onPress={() => setShowDeleteModal(false)}
+                onPress={() => setSelectedGameId(null)}
               >
-                <Text style={styles.cancelText}>
-                  Cancelar
-                </Text>
+                <Text style={styles.cancelText}>Cancelar</Text>
               </TouchableOpacity>
 
               <TouchableOpacity
                 style={styles.confirmButton}
+                onPress={async () => {
+                  if (selectedGameId) {
+                    await removeGame(selectedGameId);
+                    setList((prev) =>
+                      prev.filter((g) => g.gameId !== selectedGameId)
+                    );
+                    setSelectedGameId(null);
+                  }
+                }}
               >
-                <Text style={styles.confirmText}>
-                  Eliminar
-                </Text>
+                <Text style={styles.confirmText}>Eliminar</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -141,7 +128,6 @@ export default function MyListScreen() {
     </>
   );
 }
-
 const styles = StyleSheet.create({
   list: {
     flex: 1,
