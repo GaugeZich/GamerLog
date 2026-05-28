@@ -12,6 +12,8 @@ export const theme = {
         textMuted: '#666666',
         textDark: '#0d0d0d',
         error: '#ff4444',
+        delete: '#e4296e',
+        deleteDim: '#f95bd622',
     },
     spacing: {
         xs: 4,
