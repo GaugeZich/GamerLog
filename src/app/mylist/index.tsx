@@ -10,6 +10,7 @@ import {
 
 import { useRouter, useFocusEffect } from 'expo-router';
 import { MaterialIcons } from '@expo/vector-icons';
+import Svg, { Path } from 'react-native-svg';
 
 import { EmptyState } from '../../components/EmptyState';
 import { getSavedGames, removeGame } from '../../services/storage.service';
@@ -30,10 +31,23 @@ export default function MyListScreen() {
 
   if (!list.length) {
     return (
-      <EmptyState
-        message="Tu lista está vacía. Explorá juegos y agregá los que jugaste."
-        icon="◻"
-      />
+      <View style={styles.emptyContainer}>
+        <Svg
+          width={80}
+          height={80}
+          viewBox="0 -960 960 960"
+          fill="none"
+        >
+          <Path
+            d="M182-200q-51 0-79-35.5T82-322l42-300q9-60 53.5-99T282-760h396q60 0 104.5 39t53.5 99l42 300q7 51-21 86.5T778-200q-21 0-39-7.5T706-230l-90-90H344l-90 90q-15 15-33 22.5t-39 7.5Zm16-86 114-114h336l114 114q2 2 16 6 11 0 17.5-6.5T800-304l-44-308q-4-29-26-48.5T678-680H282q-30 0-52 19.5T204-612l-44 308q-2 11 4.5 17.5T182-280q2 0 16-6Zm510.5-165.5Q720-463 720-480t-11.5-28.5Q697-520 680-520t-28.5 11.5Q640-497 640-480t11.5 28.5Q663-440 680-440t28.5-11.5Zm-80-120Q640-583 640-600t-11.5-28.5Q617-640 600-640t-28.5 11.5Q560-617 560-600t11.5 28.5Q583-560 600-560t28.5-11.5ZM310-440h60v-70h70v-60h-70v-70h-60v70h-70v60h70v70Zm170-40Z"
+            fill={theme.colors.textMuted}
+          />
+        </Svg>
+
+        <Text style={styles.emptyText}>
+          Tu lista está vacía. Explorá juegos y agregá los que jugaste.
+        </Text>
+      </View>
     );
   }
 
@@ -80,7 +94,10 @@ export default function MyListScreen() {
                 size={18}
                 color={theme.colors.delete}
               />
-              <Text style={styles.deleteText}>Eliminar reseña</Text>
+
+              <Text style={styles.deleteText}>
+                Eliminar reseña
+              </Text>
             </TouchableOpacity>
           </View>
         )}
@@ -112,9 +129,11 @@ export default function MyListScreen() {
                 onPress={async () => {
                   if (selectedGameId) {
                     await removeGame(selectedGameId);
+
                     setList((prev) =>
                       prev.filter((g) => g.gameId !== selectedGameId)
                     );
+
                     setSelectedGameId(null);
                   }
                 }}
@@ -128,6 +147,7 @@ export default function MyListScreen() {
     </>
   );
 }
+
 const styles = StyleSheet.create({
   list: {
     flex: 1,
@@ -146,9 +166,6 @@ const styles = StyleSheet.create({
 
     borderWidth: 1,
     borderColor: theme.colors.border,
-
-    borderLeftWidth: 3,
-    borderLeftColor: theme.colors.cyan,
 
     gap: theme.spacing.xs,
   },
@@ -312,5 +329,23 @@ const styles = StyleSheet.create({
   confirmText: {
     color: theme.colors.delete,
     fontWeight: '700',
+  },
+
+  emptyContainer: {
+    flex: 1,
+    backgroundColor: theme.colors.background,
+
+    justifyContent: 'center',
+    alignItems: 'center',
+
+    padding: theme.spacing.xl,
+    gap: theme.spacing.md,
+  },
+
+  emptyText: {
+    color: theme.colors.textMuted,
+    fontSize: theme.font.md,
+    textAlign: 'center',
+    lineHeight: 24,
   },
 });
