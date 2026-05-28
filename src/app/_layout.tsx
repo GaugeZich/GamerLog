@@ -37,7 +37,6 @@ export default function RootLayout() {
                 }
             }}
         >
-            {/* 1. Pestaña de Inicio */}
             <Tabs.Screen
                 name="index"
                 options={{
@@ -53,7 +52,6 @@ export default function RootLayout() {
                 }}
             />
 
-            {/* 2. Pestaña de Explorar */}
             <Tabs.Screen
                 name="games"
                 options={{
@@ -69,7 +67,6 @@ export default function RootLayout() {
                 }}
             />
 
-            {/* 3. Pestaña de Mi Lista */}
             <Tabs.Screen
                 name="mylist"
                 options={{
